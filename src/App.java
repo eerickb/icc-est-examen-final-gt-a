@@ -1,18 +1,9 @@
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
-
+import java.util.*;
 import controllers.MaquinaController;
 import models.Maquina;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        List<Maquina> maquinas = crearMaquinas();
-
-    }
-
-    static List<Maquina> crearMaquinas() {
 
         List<Maquina> maquinas = Arrays.asList(
                 new Maquina("Controlador20", "155.25.220.238", Arrays.asList(21, 30, 29, 16)),
@@ -65,7 +56,27 @@ public class App {
                 new Maquina("Nodo7", "23.248.75.5", Arrays.asList(18, 28, 10, 27, 29)),
                 new Maquina("Nodo6", "169.238.150.174", Arrays.asList(6, 14, 3)),
                 new Maquina("DB13", "71.248.50.86", Arrays.asList(17, 11, 12)));
-        return maquinas;
 
+        System.out.println("Erick Bermeo");
+        
+        MaquinaController controller = new MaquinaController();
+
+        System.out.println("Metodo A - filtrarPorSubred > 100:");
+        Stack<Maquina> pila = controller.filtrarPorSubred(maquinas, 100);
+        pila.forEach(System.out::println);
+
+        System.out.println("\nMetodo B - ordenarPorSubred:");
+        Set<Maquina> ordenado = controller.ordenarPorSubred(pila);
+        ordenado.forEach(System.out::println);
+
+        System.out.println("\nMetodo C - agruparPorRiesgo:");
+        Map<Integer, Queue<Maquina>> mapa = controller.agruparPorRiesgo(maquinas);
+        mapa.forEach((riesgo, cola) -> {
+            System.out.println("Riesgo " + riesgo + " -> " + cola);
+        });
+
+        System.out.println("\nMetodo D - explotarGrupo:");
+        Stack<Maquina> grupoMayor = controller.explotarGrupo(mapa);
+        grupoMayor.forEach(System.out::println);
     }
 }
